@@ -17,4 +17,11 @@ int main(void) {
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(8080);
     server_addr.sin_addr.s_addr = INADDR_ANY;
+
+    int rc = bind(tcp_socket, (const struct sockaddr*)&server_addr, sizeof(server_addr));
+    if (rc < 0) {
+        perror("bind()");
+        return 1;
+    }
+    printf("bind succeeded\n");
 }

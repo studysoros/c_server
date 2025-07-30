@@ -22,14 +22,17 @@ int main(void) {
     int rc = bind(tcp_socket, (const struct sockaddr*)&server_addr, sizeof(server_addr));
     if (rc < 0) {
         perror("bind()");
-        return 1;
+        goto exit;
     }
     printf("bind succeeded\n");
 
     rc = listen(tcp_socket, SOMAXCONN);
     if (rc < 0) {
         perror("listen()");
-        return 1;
+        goto exit;
     }
     printf("listen succeeded\n");
+
+exit:
+    close(tcp_socket);
 }

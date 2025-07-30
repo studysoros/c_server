@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <unistd.h>
 
 int main(void) {
     int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -24,4 +25,11 @@ int main(void) {
         return 1;
     }
     printf("bind succeeded\n");
+
+    rc = listen(tcp_socket, SOMAXCONN);
+    if (rc < 0) {
+        perror("listen()");
+        return 1;
+    }
+    printf("listen succeeded\n");
 }

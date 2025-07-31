@@ -8,6 +8,7 @@ int main(void) {
     int tcp_socket = 0;
     struct sockaddr_in server_addr;
     int rc = 0;
+    int ret = 0;
 
     memset(&server_addr, 0, sizeof(server_addr));
     
@@ -25,6 +26,7 @@ int main(void) {
     int rc = bind(tcp_socket, (const struct sockaddr*)&server_addr, sizeof(server_addr));
     if (rc < 0) {
         perror("bind()");
+        ret = 1;
         goto exit;
     }
     printf("bind succeeded\n");
@@ -32,10 +34,12 @@ int main(void) {
     rc = listen(tcp_socket, SOMAXCONN);
     if (rc < 0) {
         perror("listen()");
+        ret = 1;
         goto exit;
     }
     printf("listen succeeded\n");
 
 exit:
     close(tcp_socket);
+    return ret;
 }

@@ -9,6 +9,7 @@ int main(void) {
     struct sockaddr_in server_addr;
     int rc = 0;
     int ret = 0;
+    int client_socket = 0;
 
     memset(&server_addr, 0, sizeof(server_addr));
     
@@ -38,6 +39,12 @@ int main(void) {
         goto exit;
     }
     printf("listen succeeded\n");
+
+    for (;;) {
+        printf("waiting for connections...\n");
+        client_socket = accept(tcp_socket, NULL, NULL);
+        printf("got a connection!\n");
+    }
 
 exit:
     close(tcp_socket);

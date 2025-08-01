@@ -3,6 +3,32 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
+
+int handle_client(int client_socket) {
+  ssize_t n = 0;
+  char buff[100];
+
+  printf("\n---\n");
+  for (;;) {
+    memset(buff, 0, sizeof(buff));
+
+    n = read(client_socket, buff, sizeof(buff)-1);
+    if (n < 0) {
+      perror("read(client_socket)");
+      return -1;
+    }
+    if (n == 0) {
+      printf("connection closed");
+      break;
+    }
+
+    printf("%s\n", buff);
+  }
+  printf("\n---\n");
+
+  return 0;
+}
 
 int main(void) {
     int tcp_socket = 0;
@@ -43,7 +69,9 @@ int main(void) {
     for (;;) {
         printf("waiting for connections...\n");
         client_socket = accept(tcp_socket, NULL, NULL);
+        
         printf("got a connection!\n");
+        rc = handle_client(client_socket);
     }
 
 exit:
